@@ -5,10 +5,15 @@
   "author": "Maciej Sopylo <me@klh.io>",
   "license": "MIT",
   "scripts": {
-    "test": "ts-node ./tree.ts"
+    "test:unit": "mocha --require ts-node/register --extensions ts **/*.spec.ts",
+    "test:integration": "ts-node ./tree.ts"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }

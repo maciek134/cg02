@@ -30,7 +30,7 @@ abstract class Node<T> {
   }
 }
 
-class AddNode extends Node<Node<any>> {
+export class AddNode extends Node<Node<any>> {
   operator = NodeType.Add;
 
   result(): number {
@@ -38,7 +38,7 @@ class AddNode extends Node<Node<any>> {
   }
 }
 
-class SubtractNode extends Node<Node<any>> {
+export class SubtractNode extends Node<Node<any>> {
   operator = NodeType.Subtract;
 
   result(): number {
@@ -46,7 +46,7 @@ class SubtractNode extends Node<Node<any>> {
   }
 }
 
-class MultiplyNode extends Node<Node<any>> {
+export class MultiplyNode extends Node<Node<any>> {
   operator = NodeType.Multiply;
   
   result(): number {
@@ -54,7 +54,7 @@ class MultiplyNode extends Node<Node<any>> {
   }
 }
 
-class DivideNode extends Node<Node<any>> {
+export class DivideNode extends Node<Node<any>> {
   operator = NodeType.Divide;
   
   result(): number {
@@ -62,7 +62,7 @@ class DivideNode extends Node<Node<any>> {
   }
 }
 
-class ValueNode extends Node<undefined> {
+export class ValueNode extends Node<undefined> {
   operator = NodeType.Value;
 
   constructor(value: number) {
