@@ -1,62 +1,92 @@
 import { strictEqual } from 'assert';
 
-const Node = (operator: any, value: any, left: any, right: any) => {
-  const result = function () {
-    switch (operator) {
-      case "+":
-        return left.result() + right.result();
-      case "-":
-        return left.result() - right.result();
-      case "x":
-        return left.result() * right.result();
-      case "÷":
-        return left.result() / right.result();
-      default:
-        return value;
-    }
-  };
+enum NodeType {
+  Add = '+',
+  Subtract = '-',
+  Multiply = 'x',
+  Divide = '÷',
+  Value = '',
+}
 
-  const toString = function () {
-    switch (operator) {
-      case "+":
-        return `(${left.toString()} + ${right.toString()})`;
-      case "-":
-        return `(${left.toString()} - ${right.toString()})`;
-      case "x":
-        return `(${left.toString()} x ${right.toString()})`;
-      case "÷":
-        return `(${left.toString()} ÷ ${right.toString()})`;
-      default:
-        return value.toString();
-    }
-  };
+abstract class Node<T> {
+  abstract operator: NodeType;
+  left: T;
+  right: T;
+  value?: number;
+  abstract result(): number;
 
-  return {
-    operator,
-    value,
-    left,
-    right,
-    result,
-    toString
-  };
-};
+  constructor(left: T, right: T, value?: number) {
+    this.left = left;
+    this.right = right;
+    this.value = value;
+  }
 
-const tree = Node(
-  "÷",
-  null,
-  Node(
-    "+",
-    null,
-    Node("", 7, null, null),
-    Node(
-      "x",
-      null,
-      Node("-", null, Node("", 3, null, null), Node("", 2, null, null)),
-      Node("", 5, null, null)
-    )
+  toString(): string {
+    if (this.operator === NodeType.Value) {
+      return this.value?.toString() ?? '';
+    } 
+
+    return `(${this.left} ${this.operator} ${this.right})`;
+  }
+}
+
+class AddNode extends Node<Node<any>> {
+  operator = NodeType.Add;
+
+  result(): number {
+    return this.left.result() + this.right.result();
+  }
+}
+
+class SubtractNode extends Node<Node<any>> {
+  operator = NodeType.Subtract;
+
+  result(): number {
+    return this.left.result() - this.right.result();
+  }
+}
+
+class MultiplyNode extends Node<Node<any>> {
+  operator = NodeType.Multiply;
+  
+  result(): number {
+    return this.left.result() * this.right.result();
+  }
+}
+
+class DivideNode extends Node<Node<any>> {
+  operator = NodeType.Divide;
+  
+  result(): number {
+    return this.left.result() / this.right.result();
+  }
+}
+
+class ValueNode extends Node<undefined> {
+  operator = NodeType.Value;
+
+  constructor(value: number) {
+    super(undefined, undefined, value);
+  }
+
+  result(): number {
+    return this.value || 0;
+  }
+}
+
+const tree = new DivideNode(
+  new AddNode(
+    new ValueNode(7),
+    new MultiplyNode(
+      new SubtractNode(
+        new ValueNode(3),
+        new ValueNode(2),
+      ),
+      new ValueNode(5),
+    ),
   ),
-  Node("", 6, null, null)
-);
+  new ValueNode(6),
+)
 
 // I guess no separate tests if I'm not allowed to move these?
 
