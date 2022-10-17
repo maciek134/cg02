@@ -22,10 +22,6 @@ abstract class Node<T> {
   }
 
   toString(): string {
-    if (this.operator === NodeType.Value) {
-      return this.value?.toString() ?? '';
-    } 
-
     return `(${this.left} ${this.operator} ${this.right})`;
   }
 }
@@ -71,6 +67,10 @@ export class ValueNode extends Node<undefined> {
 
   result(): number {
     return this.value || 0;
+  }
+
+  toString(): string {
+    return this.value?.toString() ?? '';
   }
 }
 
